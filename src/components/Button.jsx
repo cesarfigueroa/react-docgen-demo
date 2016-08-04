@@ -1,16 +1,14 @@
-const React = require('react');
+import React, { Component, PropTypes } from 'react';
 
-const Button = React.createClass({
-  displayName: 'Button',
-  propTypes: {
-    text: React.PropTypes.string.isRequired,
-    isDisabled: React.PropTypes.bool.isRequired
-  },
-  render: function() {
-    return React.createElement('button', {
-      disabled: this.props.isDisabled
-    }, this.props.text)
+class Button extends Component {
+  render() {
+    return <button disabled={this.props.isDisabled}>{this.props.text}</button>;
   }
-});
+}
 
-module.exports = Button;
+Button.propTypes = {
+  text: PropTypes.string.isRequired,
+  isDisabled: PropTypes.bool.isRequired
+};
+
+export default Button;

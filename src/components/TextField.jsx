@@ -1,15 +1,13 @@
-const React = require('react');
+import React, { Component, PropTypes } from 'react';
 
-const TextField = React.createClass({
-  displayName: 'TextField',
-  propTypes: {
-    placeholder: React.PropTypes.string
-  },
-  render: function() {
-    return React.createElement('input', {
-      placeholder: this.props.placeholder
-    })
+class TextField extends Component {
+  render() {
+    return <input placeholder={this.props.placeholder} />;
   }
-});
+}
 
-module.exports = TextField;
+TextField.propTypes = {
+  placeholder: PropTypes.string
+};
+
+export default TextField;

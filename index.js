@@ -1,21 +1,38 @@
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
+const fs = require('fs');
 
 const components = require('./components.json');
 const props = {
   'src/components/Button.jsx': {
     text: 'foo',
-    isDisabled: true
+    isDisabled: false
   },
   'src/components/TextField.jsx': {
-    placeholder: 'Foo Bar Baz'
+    placeholder: 'Hello World'
   }
 };
 
-Object.keys(components).forEach(component => {
-  let markup = ReactDOMServer.renderToStaticMarkup(
-    React.createElement(require(`./${component}`), props[component])
-  );
+let markup = Object.keys(components).reduce((list, componentPath) => {
+  let component = require(`./${componentPath}`);
+  return list.concat([
+    `<h3>${component.displayName}</h3>`,
+    `<em>${components[componentPath].description}</em>`,
+    ReactDOMServer.renderToStaticMarkup(
+      React.createElement(component, props[componentPath])
+    ),
+    `<pre>props: ${Object.keys(components[componentPath].props)}</pre>`,
+    '<hr />'
+  ]);
+}, []);
 
-  console.log(markup);
-});
+fs.writeFileSync('index.html', `
+  <html>
+    <head>
+      <title>Components</title>
+    </head>
+    <body>
+      ${markup.join('')}
+    </body>
+  </html>
+`);
